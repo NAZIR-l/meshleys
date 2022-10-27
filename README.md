@@ -1,6 +1,5 @@
 <p align="center" style="display:flex; justify-content:center; gap:5rem">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-  <span style="display:flex; align-items:center; font-size:95px" >+</span>
   <img src="https://cdn.worldvectorlogo.com/logos/aws-cognito.svg" width="160"/>
 </p>
 
