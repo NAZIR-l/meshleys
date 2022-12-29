@@ -41,7 +41,17 @@ program
                                                 return;  
                                             }      
                                             else {
-                                                 exec(`git commit -m ${result.commit}`)  
+                                                 exec(`git push ${result.HTTPS}`, (err, push) =>{
+                                                    if(err){
+                                                        console.log(err);
+                                                        return ;
+                                                    }
+                                                    else{
+                                                        console.log(push);
+                                                        return push;
+
+                                                    }
+                                                 })  
                                             }
                                             });  
                                     }
