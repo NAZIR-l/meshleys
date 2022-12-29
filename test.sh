@@ -41,8 +41,7 @@ program
                                                 return;  
                                             }      
                                             else {
-                                                spawn('git', ['push', "${result.HTTPS}"], { stdio: 'inherit' })
-                                                console.log(stdout);    
+                                                 exec(`git commit -m ${result.commit}`)  
                                             }
                                             });  
                                     }
