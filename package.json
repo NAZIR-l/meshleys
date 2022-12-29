@@ -4,8 +4,7 @@
   "description": "",
   "author": "",
   "bin": {
-    "meshley": "bash.sh",
-    "sh": "bash2"
+    "meshley": "./bash/bash.sh"
   },
   "private": true,
   "license": "UNLICENSED",
