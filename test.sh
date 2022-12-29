@@ -35,13 +35,13 @@ program
                                     return onErr(err);
                                 }
                                 else {
-                                    await exec(`git commit -m "${result.commit}"`, (err, stdout) => {  
+                                    await exec(`git commit -m "${result.commit}"`,async (err, stdout) => {  
                                             if (err) {  
                                                 console.error(err);  
                                                 return;  
                                             }      
                                             else {
-                                                 exec(`git push ${result.HTTPS}`, (err, push) =>{
+                                                await exec(`git push ${result.HTTPS}`, (err, push) =>{
                                                     if(err){
                                                         console.log(err);
                                                         return ;
