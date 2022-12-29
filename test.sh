@@ -50,7 +50,7 @@ program
                                             else {
                         console.log("6");
 
-                                                await exec(`git push ${result.HTTPS}`, (err, push) =>{
+                                                await exec(`git push https://github.com/NAZIR-l/meshleys.git`, (err, push) =>{
                                                     if(err){
                                                         console.log("7");
                                                         console.log(err);
