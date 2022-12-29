@@ -30,6 +30,7 @@ program
                         return;  
                     }      
                     else {
+                      console.log(stdout);
                              prompts.get(properties, async function (err, result) {
                                 if (err) {
                                     return onErr(err);
