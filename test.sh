@@ -26,27 +26,39 @@ program
 
           exec(`git add .`, (err, stdout) => {  
                     if (err) {  
+                        console.log("1");
                         console.error(err);  
                         return;  
                     }      
                     else {
+                        console.log("2");
+
                              prompts.get(properties, async function (err, result) {
                                 if (err) {
+                                    console.log("3");
                                     return onErr(err);
                                 }
                                 else {
+                        console.log("4");
+
                                     await exec(`git commit -m "${result.commit}"`,async (err, stdout) => {  
                                             if (err) {  
+                                                console.log("5");
                                                 console.error(err);  
                                                 return;  
                                             }      
                                             else {
+                        console.log("6");
+
                                                 await exec(`git push ${result.HTTPS}`, (err, push) =>{
                                                     if(err){
+                                                        console.log("7");
                                                         console.log(err);
                                                         return ;
                                                     }
                                                     else{
+                        console.log("8");
+
                                                         console.log(push);
                                                         return push;
 
