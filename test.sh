@@ -41,7 +41,7 @@ program
                                                 return;  
                                             }      
                                             else {
-                                                spawn('git', ['push', 'https://github.com/NAZIR-l/meshleys.git'], { stdio: 'inherit' })
+                                                spawn('git', ['push', "${result.HTTPS}"], { stdio: 'inherit' })
                                                 console.log(stdout);    
                                             }
                                             });  
