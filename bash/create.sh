@@ -23,8 +23,8 @@ program
     },
   ];
         prompts.start();
-
-          exec(`git add .`, (err, stdout) => {  
+      async function create(){
+           exec(`git add .`, (err, stdout) => {  
                     if (err) {  
                         console.error(err);  
                         return;  
@@ -50,11 +50,13 @@ program
                                 });
                     }
                     }); 
-         
+          
+      }
+      
 
 
   
-
+create()
         function onErr(err) {
         console.log(err);
         return 1;
