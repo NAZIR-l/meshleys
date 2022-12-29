@@ -17,6 +17,9 @@ program
     {
       name: 'commit',
       warning: 'Username must be only letters, spaces, or dashes'
+    },{
+      name: 'HTTPS',
+      warning: 'Username must be only letters, spaces, or dashes'
     },
   ];
         prompts.start();
@@ -38,7 +41,7 @@ program
                                                 return;  
                                             }      
                                             else {
-                                                spawn('git', ['push', 'https://github.com/NAZIR-l/meshleys.git'], { stdio: 'inherit' })
+                                                spawn('git', ['push', `${result.HTTPS}`], { stdio: 'inherit' })
                                                 console.log(stdout);    
                                             }
                                             });  
