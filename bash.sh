@@ -8,8 +8,8 @@ Amplify.configure(awsconfig);
 
 
 program
-.command('build', 'docker  build . ', { executableFile: 'bash2' })
+.command('build', 'docker  build .',{ executableFile: 'bash2.sh' })
 .command('login', 'login to aws', { executableFile: 'bash3.sh' })
-.command('test', 'test to aws', { executableFile: 'test.sh' })
+.command('create', 'test to aws', { executableFile: 'test.sh' })
 
 program.parse(process.argv);
