@@ -1,55 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import {
-  AuthenticationDetails,
-  CognitoUser,
-  CognitoUserAttribute,
-  CognitoUserPool,
-} from 'amazon-cognito-identity-js';
-import { AuthConfig } from './auth.config';
-import { ConfirmationCredentialsDTO } from './dto/confirmation.dto';
+import {  CognitoUser, CognitoUserAttribute, CognitoUserPool, } from 'amazon-cognito-identity-js';
+import { AuthConfig } from '../config/auth.config';
 import { SignupDTO } from './dto/signup.dto';
+import { ConfirmationCredentialsDTO } from './dto/confirmation.dto';
+import { Auth } from 'aws-amplify';
+import { UserEntity } from 'src/user/models/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { from } from 'rxjs';
+
+
+
 @Injectable()
 export class AuthService {
   private userPool: CognitoUserPool;
-  constructor(private readonly authConfig: AuthConfig) {
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly UserRepository: Repository<UserEntity>,
+    private readonly authConfig: AuthConfig
+    
+    ) {
     this.userPool = new CognitoUserPool({
       UserPoolId: this.authConfig.userPoolId,
       ClientId: this.authConfig.clientId,
     });
   }
 
-  async authenticateUser(user: { name: string; password: string }) {
-    const { name, password } = user;
-
-    const authenticationDetails = new AuthenticationDetails({
-      Username: name,
-      Password: password,
-    });
-
-    const userData = {
-      Username: name,
-      Pool: this.userPool,
-    };
-
-    const newUser = new CognitoUser(userData);
-
-    return new Promise((resolve, reject) => {
-      return newUser.authenticateUser(authenticationDetails, {
-        onSuccess: (result) => {
-          console.log({ result });
-          resolve(result);
-        },
-        onFailure: (err) => {
-          console.error(err);
-          reject(err);
-        },
-      });
-    });
+  async signIn(users: { username: string; password: string }) {
+    try {
+      const { username, password } = users;
+      const user = await Auth.signIn(username, password);
+      console.log(user)
+    } catch (error) {
+      return error
+    }
   }
 
   async registerUser(authRegisterUserDto: SignupDTO) {
-    const { username, email, password } = authRegisterUserDto;
-
+    const { username, gender,email, password  } = authRegisterUserDto;
     return new Promise((resolve, reject) => {
       this.userPool.signUp(
         username,
@@ -59,16 +47,24 @@ export class AuthService {
             Name: 'email',
             Value: email,
           }),
+          new CognitoUserAttribute({
+            Name: 'gender',
+            Value: gender,
+          }),
         ],
         null,
         (err, result) => {
           if (!result) {
             reject(err);
           } else {
+            const authid = result.userSub
+            from(this.UserRepository.save({username,email,authid}));
+          
             resolve(result.user);
           }
         },
       );
+      
     });
   }
 
@@ -81,9 +77,7 @@ export class AuthService {
         Username: Username,
         Pool: this.userPool,
       };
-
       const confirmUser = new CognitoUser(userData);
-
       return confirmUser.confirmRegistration(
         confirmationCredentials.ConfirmationCode,
         false,
@@ -91,6 +85,20 @@ export class AuthService {
           if (!result) {
             reject(err);
           } else {
+            const find = this.UserRepository.findOneBy({ username : Username },);
+            console.log("find")
+            find.then((res)=>{
+              console.log(res);
+
+                this.UserRepository.update({
+                id: res.id,
+              }, {
+                verified: true,
+              });
+           
+           
+           
+            })
             resolve(result);
           }
         },
@@ -98,3 +106,4 @@ export class AuthService {
     });
   }
 }
+

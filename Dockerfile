@@ -1,5 +1,5 @@
 # build stage
-FROM node:16
+FROM node:lts-alpine
 
 WORKDIR /app
 

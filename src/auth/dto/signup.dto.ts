@@ -12,5 +12,10 @@ export class SignupDTO {
   public email: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  public gender: string;
+  
+  @ApiProperty()
   public password: string;
 }

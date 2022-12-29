@@ -2,6 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as bodyParser from 'body-parser';
 import { AppModule } from './app.module';
+import { Amplify } from 'aws-amplify';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const  awsconfig = require('./aws-exports');
+
+Amplify.configure(awsconfig);
+
 
 global['fetch'] = require('node-fetch');
 
@@ -22,10 +28,14 @@ async function bootstrap() {
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
   app.enableCors({
     origin: '*',
-    methods: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
     allowedHeaders: '*',
+    optionsSuccessStatus: 204
   });
 
-  await app.listen(8000);
+   app.listen(8000,()=>{
+    console.log("Listening");
+   });
 }
 bootstrap();
